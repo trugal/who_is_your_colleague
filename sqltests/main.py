@@ -3,8 +3,23 @@
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 import psycopg2
+from configparser import ConfigParser
+
 import re
 import datetime
+
+
+def config(filename='database.ini', section='postgresql'):
+    parser = ConfigParser()
+    parser.read(filename)
+    db={}
+    if parser.has_section(section):
+        params = parser.items(section)
+        for param in params:
+            db[param[0]] = param[1]
+    else:
+        raise Exception('Section {0} not found in the {1} file'.format(section, filename))
+    return db
 
 
 class User:
@@ -15,14 +30,13 @@ class User:
         self.bdate=bdate
 
 
-conn = psycopg2.connect(
-    host="localhost",
-    database="suppliers",
-    user="postgres",
-    password="Pla100r!")
+params = config()
+conn = psycopg2.connect(**params)
+
 list_of_users = []
 cursor = conn.cursor()
 cursor.execute("SELECT * FROM users")
+
 rows = cursor.fetchall()
 for row in rows:
 
