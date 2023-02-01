@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{{ super() }}
+<p>Фамилия пользователя: {{ surname }}</p>
+<p>Имя пользователя: {{ first_name }}</p>
+<p>Отчество пользователя: {{ second_name }}</p>
+<p>Возраст пользователя: {{ age }}</p>
+{% endblock content %}
